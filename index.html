@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="manifest" href="manifest.json">
+    <title>Тренажёр памяти</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav-inner">
+            <a href="#" class="logo" onclick="goHome(); return false;">Memory Trainer</a>
+            <div class="nav-right">
+                <span class="nav-stat">уровень <span id="level">1.0</span></span>
+                <span class="nav-divider"></span>
+                <span class="nav-stat"><span id="totalGames">0</span> <span id="gamesLabel">игр</span></span>
+                <span class="nav-divider"></span>
+                <span class="nav-stat"><span id="accuracy">0%</span> точность</span>
+                <span class="nav-divider"></span>
+                <span class="nav-streak"><span id="streak">0</span> <span id="streakLabel">побед</span> подряд</span>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container">
+        <section id="home" class="screen active">
+            <div class="hero">
+                <h1>Тренируй память каждый день</h1>
+                <p>Три небольшие игры на память и счёт. Чем лучше получается, тем сложнее задания.</p>
+            </div>
+
+            <div class="games">
+                <article class="game-card" onclick="play('cards')">
+                    <div class="game-preview cards-preview">
+                        <div class="preview-cards">
+                            <div class="p-card back"></div>
+                            <div class="p-card front" style="background: #fee2e2">🍎</div>
+                            <div class="p-card back"></div>
+                            <div class="p-card front" style="background: #dcfce7">🥝</div>
+                            <div class="p-card back"></div>
+                            <div class="p-card front" style="background: #fee2e2">🍎</div>
+                        </div>
+                    </div>
+                    <div class="game-info">
+                        <h2>Найди пару</h2>
+                        <p>Открывай по две карточки и ищи одинаковые. Нужно найти все 8 пар, пока не кончилось время.</p>
+                        <div class="game-tags">
+                            <span class="tag">Визуальная память</span>
+                            <span class="tag">Адаптивно</span>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="game-card" onclick="play('math')">
+                    <div class="game-preview math-preview">
+                        <div class="math-equation">
+                            <span class="eq-num">14</span>
+                            <span class="eq-op">+</span>
+                            <span class="eq-num">8</span>
+                            <span class="eq-eq">=</span>
+                            <span class="eq-ans">?</span>
+                        </div>
+                    </div>
+                    <div class="game-info">
+                        <h2>Математические цепочки</h2>
+                        <p>Решай примеры на скорость. Числа растут вместе с уровнем.</p>
+                        <div class="game-tags">
+                            <span class="tag">Счёт</span>
+                            <span class="tag">Адаптивно</span>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="game-card" onclick="play('colors')">
+                    <div class="game-preview colors-preview">
+                        <div class="color-sequence">
+                            <div class="seq-dot" style="background:#ef4444"></div>
+                            <div class="seq-dot" style="background:#3b82f6"></div>
+                            <div class="seq-dot" style="background:#22c55e"></div>
+                            <div class="seq-dot" style="background:#eab308"></div>
+                        </div>
+                    </div>
+                    <div class="game-info">
+                        <h2>Цветовая память</h2>
+                        <p>Запомни, в каком порядке загорались цвета, и повтори. С каждым уровнем цепочка длиннее.</p>
+                        <div class="game-tags">
+                            <span class="tag">Последовательность</span>
+                            <span class="tag">7 уровней</span>
+                        </div>
+                    </div>
+                </article>
+            </div>
+
+            <footer class="home-footer">
+                <p>Лучше заниматься понемногу, но каждый день</p>
+            </footer>
+        </section>
+
+        <section id="cardsGame" class="screen">
+            <div class="game-header">
+                <button class="back-btn" onclick="goHome()">Назад</button>
+                <div class="game-header-info">
+                    <h1>Найди пару</h1>
+                    <div class="game-status">
+                        <span class="status-item"><strong id="cardsPairs">0/0</strong> пар</span>
+                        <span class="status-item timer">⏱ <strong id="cardsTime">60</strong></span>
+                    </div>
+                </div>
+            </div>
+            <div id="cardsGrid" class="cards-grid"></div>
+        </section>
+
+        <section id="mathGame" class="screen">
+            <div class="game-header">
+                <button class="back-btn" onclick="goHome()">Назад</button>
+                <div class="game-header-info">
+                    <h1>Математические цепочки</h1>
+                    <div class="game-status">
+                        <span class="status-item">верно <strong id="mathScore">0</strong>/<span id="mathTotal">10</span></span>
+                        <span class="status-item timer">⏱ <strong id="mathTime">60</strong></span>
+                    </div>
+                </div>
+            </div>
+            <div class="math-game-area">
+                <div class="math-problem-box">
+                    <div id="mathProblem" class="math-problem"></div>
+                    <div id="mathInput" class="math-input"></div>
+                    <div id="mathFeedback" class="math-feedback"></div>
+                </div>
+                <div id="mathKeypad" class="math-keypad"></div>
+            </div>
+        </section>
+
+        <section id="colorsGame" class="screen">
+            <div class="game-header">
+                <button class="back-btn" onclick="goHome()">Назад</button>
+                <div class="game-header-info">
+                    <h1>Цветовая память</h1>
+                    <div class="game-status">
+                        <span class="status-item">Уровень <strong id="colorsLevel">1</strong></span>
+                    </div>
+                </div>
+            </div>
+            <div class="colors-game-area">
+                <p id="colorsMessage" class="colors-message">Запомни последовательность</p>
+                <div id="colorsDisplay" class="colors-display"></div>
+                <div id="colorsButtons" class="colors-buttons">
+                    <button class="color-btn red" style="background:#ef4444" onclick="inputColor('red')"></button>
+                    <button class="color-btn green" style="background:#22c55e" onclick="inputColor('green')"></button>
+                    <button class="color-btn blue" style="background:#3b82f6" onclick="inputColor('blue')"></button>
+                    <button class="color-btn yellow" style="background:#eab308" onclick="inputColor('yellow')"></button>
+                </div>
+            </div>
+        </section>
+
+        <section id="resultScreen" class="screen">
+            <div class="result-box">
+                <div class="result-emoji" id="rIcon">🎉</div>
+                <h1 id="rTitle">Отлично!</h1>
+                <p class="result-sub" id="rSub">Результат сохранён</p>
+                <div id="rStats" class="result-stats"></div>
+                <div class="result-actions">
+                    <button class="btn-primary" onclick="replay()">Играть снова</button>
+                    <button class="btn-secondary" onclick="goHome()">В меню</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="game.js"></script>
+</body>
+</html>
